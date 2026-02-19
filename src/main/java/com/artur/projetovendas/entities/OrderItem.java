@@ -1,6 +1,7 @@
 package com.artur.projetovendas.entities;
 
 import com.artur.projetovendas.entities.pk.OrderItemPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -36,7 +37,7 @@ public class OrderItem implements Serializable {
     public void setOrder (Order order) {
         id.setOrder(order);
     }
-
+@JsonIgnore
     public Product getProduct() {
         return id.getProduct();
     }
