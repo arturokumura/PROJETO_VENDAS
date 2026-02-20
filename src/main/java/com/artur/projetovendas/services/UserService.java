@@ -2,6 +2,7 @@ package com.artur.projetovendas.services;
 
 import com.artur.projetovendas.entities.User;
 import com.artur.projetovendas.repositories.UserRepository;
+import com.artur.projetovendas.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id)); //testar erro//
     }
 
     public User insert(User obj) {
