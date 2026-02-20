@@ -4,6 +4,7 @@ import com.artur.projetovendas.entities.User;
 import com.artur.projetovendas.repositories.UserRepository;
 import com.artur.projetovendas.services.exceptions.DatabaseException;
 import com.artur.projetovendas.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,8 +31,9 @@ public class UserService {
     }
 
     public User insert(User obj) {
-        return repository.save(obj);
-    }
+            return repository.save(obj);
+        }
+
 
     public void delete(Long id) {
         try {
@@ -44,9 +46,13 @@ public class UserService {
     }
 
     public User update(Long id, User obj) {
-        User entity = repository.getReferenceById(id);
-        updateData(entity, obj);
-        return repository.save(entity);
+        try {
+            User entity = repository.getReferenceById(id);
+            updateData(entity, obj);
+            return repository.save(entity);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(User entity, User obj) {
